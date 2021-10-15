@@ -16,7 +16,7 @@ void test_encode()
     if (open_files(&encInfo) == e_failure)
     {
     	printf("ERROR: %s function failed\n", "open_files" );
-    	return 1;
+    	return;
     }
     else
     {
