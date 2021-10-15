@@ -18,6 +18,28 @@ int get_option(int type, const char *msg)
 	 */ 
 
 	/* Fill the code to add above functionality */
+scan:
+	char buffer[8];
+	fgets(buffer, sizeof(buffer), stdin);
+
+	switch(atoi(buffer)) {
+		case 0:
+			return e_exit;
+		case 1:
+			return e_add_contact;
+		case 2:
+			return e_search_contact;
+		case 3:
+			return e_edit_contact;
+		case 4:
+			return e_delete_contact;
+		case 5:
+			return e_list_contacts;
+		case 6:
+			return e_save;
+		default:
+			return -1;
+	}
 }
 
 Status save_prompt(AddressBook *address_book)
@@ -123,6 +145,7 @@ Status menu(AddressBook *address_book)
 				save_file(address_book);
 				break;
 			case e_exit:
+				exit(0);
 				break;
 		}
 	} while (option != e_exit);
