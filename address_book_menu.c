@@ -4,10 +4,9 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "abk_fileops.h"
-#include "abk_log.h"
-#include "abk_menus.h"
-#include "abk.h"
+#include "address_book.h"
+#include "address_book_fops.h"
+#include "address_book_menu.h"
 
 int get_option(int type, const char *msg)
 {
