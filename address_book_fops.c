@@ -11,25 +11,26 @@
 Status load_file(AddressBook *address_book)
 {
 	int ret;
+	FILE *fp;
 
-	/* 
-	 * Check for file existance
-	 */
-
-	if (ret == 0)
+	if ((fp = fopen(DEFAULT_FILE, "r")))
 	{
-		/* 
-		 * Do the neccessary step to open the file
-		 * Do error handling
-		 */ 
-	}
-	else
-	{
-		/* Create a file for adding entries */
+		fclose(fp);
+		ret = 0;
 	}
 
-	return e_success;
-}
+		if (ret == 0)
+		{
+			fp = fopen(DEFAULT_FILE, "wr+");
+		}
+		else
+		{
+			fp = fopen(DEFAULT_FILE, "w+");
+			fclose(fp);
+		}
+
+		return e_success;
+	}
 
 Status save_file(AddressBook *address_book)
 {
