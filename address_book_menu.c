@@ -18,7 +18,7 @@ int get_option(int type, const char *msg)
 	 */ 
 
 	/* Fill the code to add above functionality */
-scan:
+
 	char buffer[8];
 	fgets(buffer, sizeof(buffer), stdin);
 
@@ -81,7 +81,7 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	system("clear");
+	system("cls");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -115,6 +115,7 @@ Status menu(AddressBook *address_book)
 	{
 		main_menu();
 
+		printf("Please select an option: ");
 		option = get_option(NUM, "");
 
 		if ((address_book-> count == 0) && (option != e_add_contact))
@@ -166,6 +167,8 @@ Status add_contacts(AddressBook *address_book)
 		printf("1. Name\t\t: %s\n", person.name);
 		printf("2. Phone No 1\t: %d\n", person.phone_numbers);
 		printf("3. Email ID 1\t: %s\n", person.email_addresses);
+
+		
 
 		option = get_option(NUM, "");
 
