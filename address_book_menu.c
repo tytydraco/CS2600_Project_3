@@ -127,7 +127,7 @@ Status menu(AddressBook *address_book)
 		switch (option)
 		{
 			case e_add_contact:
-				/* Add your implementation to call add_contacts function here */
+				add_contacts(address_book);
 				break;
 			case e_search_contact:
 				search_contact(address_book);
@@ -155,7 +155,41 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	/* Add the functionality for adding contacts here */
+	ContactInfo person;
+	int option;
+
+	do
+	{
+		menu_header("Add Contact:\n");
+
+		printf("0. Back\n");
+		printf("1. Name\t\t: %s\n", person.name);
+		printf("2. Phone No 1\t: %d\n", person.phone_numbers);
+		printf("3. Email ID 1\t: %s\n", person.email_addresses);
+
+		option = get_option(NUM, "");
+
+		switch (option)
+		{
+		case '0':
+			menu(address_book);
+			break;
+		case '1':
+			printf("Enter the name: ");
+			scanf("%s", person.name);
+			break;
+		case '2':
+			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
+			scanf("%d", person.phone_numbers);
+			break;
+		case '3':
+			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
+			scanf("%s", person.email_addresses);
+			break;
+		}
+	} while (option != e_exit);
+
+	return e_success;
 }
 
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
