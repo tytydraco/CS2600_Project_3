@@ -10,14 +10,6 @@
 
 int get_option(int type, const char *msg)
 {
-	/*
-	 * Mutilfuction user intractions like
-	 * Just an enter key detection
-	 * Read an number
-	 * Read a charcter
-	 */ 
-
-	/* Fill the code to add above functionality */
 
 	char buffer[8];
 	fgets(buffer, sizeof(buffer), stdin);
@@ -115,7 +107,6 @@ Status menu(AddressBook *address_book)
 	{
 		main_menu();
 
-		printf("Please select an option: ");
 		option = get_option(NUM, "");
 
 		if ((address_book-> count == 0) && (option != e_add_contact))
@@ -158,39 +149,43 @@ Status add_contacts(AddressBook *address_book)
 {
 	ContactInfo person;
 	int option;
+	int test;
+	strncpy(*person.name, " ", sizeof(person.name));
+	strncpy(*person.phone_numbers, " ", sizeof(person.phone_numbers));
+	strncpy(*person.email_addresses, " ", sizeof(person.email_addresses));
 
 	do
 	{
 		menu_header("Add Contact:\n");
-
 		printf("0. Back\n");
 		printf("1. Name\t\t: %s\n", person.name);
-		printf("2. Phone No 1\t: %d\n", person.phone_numbers);
+		printf("2. Phone No 1\t: %s\n", person.phone_numbers);
 		printf("3. Email ID 1\t: %s\n", person.email_addresses);
-
-		
+		printf("\nPlease select an option: ");
 
 		option = get_option(NUM, "");
 
 		switch (option)
 		{
-		case '0':
+		case e_first_opt:
 			menu(address_book);
 			break;
-		case '1':
+		case e_second_opt:
 			printf("Enter the name: ");
 			scanf("%s", person.name);
 			break;
-		case '2':
+		case e_third_opt:
 			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
-			scanf("%d", person.phone_numbers);
+			scanf("%s", person.phone_numbers);
 			break;
-		case '3':
+		case e_fourth_opt:
 			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
 			scanf("%s", person.email_addresses);
 			break;
 		}
-	} while (option != e_exit);
+		getchar();
+
+	} while (option != e_first_opt);
 
 	return e_success;
 }
