@@ -224,4 +224,40 @@ Status edit_contact(AddressBook *address_book)
 Status delete_contact(AddressBook *address_book)
 {
 	/* Add the functionality for delete contacts here */
+
+	int option;
+
+	do
+	{
+		menu_header("Delete Contact By:\n");
+		printf("0. Back\n");
+		printf("1. Name\n");
+		printf("2. Phone No\n");
+		printf("3. Email ID\n");
+		printf("4. Serial No\n");
+		printf("\nPlease select an option: ");
+
+		option = get_option(NUM, "");
+
+		switch (option)
+		{
+		case e_first_opt:
+			menu(address_book);
+			break;
+		case e_second_opt:
+			printf("Enter the name: ");
+			//scanf("%s", person.name);
+			break;
+		case e_third_opt:
+			printf("Enter Phone Number: ");
+			//scanf("%s", person.phone_numbers);
+			break;
+		case e_fourth_opt:
+			printf("Enter Email ID: ");
+			//scanf("%s", person.email_addresses);
+			break;
+		}
+		getchar();
+
+	} while (option != e_first_opt);
 }
