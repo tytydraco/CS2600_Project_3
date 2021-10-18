@@ -13,10 +13,19 @@ int get_option(int type, const char *msg)
 	printf("%s: ", msg);
 
 	if (type == NUM) {
-		char buffer[8];
-		fgets(buffer, sizeof(buffer), stdin);
+		int num;
+		scanf("%d", &num);
+		return num;
+	} else if (type == CHAR) {
+		return fgetc(stdin);
+	} else {
+		fgetc(stdin);
+		return -1;
+	}
+}
 
-		switch (atoi(buffer))
+MenuOptions get_menu_option() {
+	switch (get_option(NUM, ""))
 		{
 		case 0:
 			return e_exit;
@@ -35,12 +44,6 @@ int get_option(int type, const char *msg)
 		default:
 			return -1;
 		}
-	} else if (type == CHAR) {
-		return fgetc(stdin);
-	} else {
-		fgetc(stdin);
-		return -1;
-	}
 }
 
 Status save_prompt(AddressBook *address_book)
@@ -116,7 +119,7 @@ Status menu(AddressBook *address_book)
 	{
 		main_menu();
 
-		option = get_option(NUM, "");
+		option = get_menu_option();
 
 		if ((address_book->count == 0) && (option != e_add_contact))
 		{
