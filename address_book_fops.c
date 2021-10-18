@@ -11,21 +11,21 @@
 Status load_file(AddressBook *address_book)
 {
 	int ret;
+	char test[] = "Test";
 
-	/* 
-	 * Check for file existance
-	 */
-
-	if (ret == 0)
+	if ((address_book->fp = fopen(DEFAULT_FILE, "r")))
 	{
-		/* 
-		 * Do the neccessary step to open the file
-		 * Do error handling
-		 */ 
+		fclose(address_book->fp);
+		ret = 1;
+	}
+
+	if (ret == 1)
+	{
+		address_book->fp = fopen(DEFAULT_FILE, "a+");
 	}
 	else
 	{
-		/* Create a file for adding entries */
+		address_book->fp = fopen(DEFAULT_FILE, "w");
 	}
 
 	return e_success;
@@ -43,13 +43,14 @@ Status save_file(AddressBook *address_book)
 	{
 		return e_fail;
 	}
-
 	/* 
 	 * Add the logic to save the file
 	 * Make sure to do error handling
 	 */ 
 
 	fclose(address_book->fp);
+
+	printf("Done. Please enter a key to continue: \n");
 
 	return e_success;
 }
