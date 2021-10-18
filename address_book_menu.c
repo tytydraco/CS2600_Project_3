@@ -10,27 +10,35 @@
 
 int get_option(int type, const char *msg)
 {
+	printf("%s: ", msg);
 
-	char buffer[8];
-	fgets(buffer, sizeof(buffer), stdin);
+	if (type == NUM) {
+		char buffer[8];
+		fgets(buffer, sizeof(buffer), stdin);
 
-	switch (atoi(buffer))
-	{
-	case 0:
-		return e_exit;
-	case 1:
-		return e_add_contact;
-	case 2:
-		return e_search_contact;
-	case 3:
-		return e_edit_contact;
-	case 4:
-		return e_delete_contact;
-	case 5:
-		return e_list_contacts;
-	case 6:
-		return e_save;
-	default:
+		switch (atoi(buffer))
+		{
+		case 0:
+			return e_exit;
+		case 1:
+			return e_add_contact;
+		case 2:
+			return e_search_contact;
+		case 3:
+			return e_edit_contact;
+		case 4:
+			return e_delete_contact;
+		case 5:
+			return e_list_contacts;
+		case 6:
+			return e_save;
+		default:
+			return -1;
+		}
+	} else if (type == CHAR) {
+		return fgetc(stdin);
+	} else {
+		fgetc(stdin);
 		return -1;
 	}
 }
