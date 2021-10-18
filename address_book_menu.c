@@ -85,7 +85,11 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
+#ifdef __linux__
+	system("clear");
+#else
 	system("cls");
+#endif
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
