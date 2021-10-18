@@ -180,22 +180,22 @@ Status add_contacts(AddressBook *address_book)
 
 		switch (option)
 		{
-		case e_first_opt:
+		case 0:
 			menu(address_book);
 			break;
-		case e_second_opt:
+		case 1:
 			printf("Enter the name: ");
 			scanf("%s", person.name);
 			fprintf(address_book->fp, *person.name);
 			fprintf(address_book->fp, "\n");
 			break;
-		case e_third_opt:
+		case 2:
 			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
 			scanf("%s", person.phone_numbers);
 			fprintf(address_book->fp, *person.phone_numbers);
 			fprintf(address_book->fp, "\n");
 			break;
-		case e_fourth_opt:
+		case 3:
 			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
 			scanf("%s", person.email_addresses);
 			fprintf(address_book->fp, *person.email_addresses);
@@ -204,7 +204,7 @@ Status add_contacts(AddressBook *address_book)
 		}
 		getchar();
 
-	} while (option != e_first_opt);
+	} while (option != 0);
 
 	return e_success;
 }
@@ -244,23 +244,29 @@ Status delete_contact(AddressBook *address_book)
 
 		switch (option)
 		{
-		case e_first_opt:
+		case 0:
 			menu(address_book);
 			break;
-		case e_second_opt:
+		case 1:
 			printf("Enter the name: ");
 			//scanf("%s", person.name);
 			break;
-		case e_third_opt:
+		case 2:
 			printf("Enter Phone Number: ");
 			//scanf("%s", person.phone_numbers);
 			break;
-		case e_fourth_opt:
+		case 3:
 			printf("Enter Email ID: ");
 			//scanf("%s", person.email_addresses);
+			break;
+		case 4:
+			printf("Enter Serial No: ");
+			//scanf("%s", person.s_no);
 			break;
 		}
 		getchar();
 
-	} while (option != e_first_opt);
+	} while (option != 0);
+
+	return e_success;
 }
