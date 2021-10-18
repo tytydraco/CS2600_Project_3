@@ -14,23 +14,24 @@ int get_option(int type, const char *msg)
 	char buffer[8];
 	fgets(buffer, sizeof(buffer), stdin);
 
-	switch(atoi(buffer)) {
-		case 0:
-			return e_exit;
-		case 1:
-			return e_add_contact;
-		case 2:
-			return e_search_contact;
-		case 3:
-			return e_edit_contact;
-		case 4:
-			return e_delete_contact;
-		case 5:
-			return e_list_contacts;
-		case 6:
-			return e_save;
-		default:
-			return -1;
+	switch (atoi(buffer))
+	{
+	case 0:
+		return e_exit;
+	case 1:
+		return e_add_contact;
+	case 2:
+		return e_search_contact;
+	case 3:
+		return e_edit_contact;
+	case 4:
+		return e_delete_contact;
+	case 5:
+		return e_list_contacts;
+	case 6:
+		return e_save;
+	default:
+		return -1;
 	}
 }
 
@@ -64,7 +65,7 @@ Status list_contacts(AddressBook *address_book, const char *title, int *index, c
 	 * Add code to list all the contacts availabe in address_book.csv file
 	 * Should be menu based
 	 * The menu provide navigation option if the entries increase the page size
-	 */ 
+	 */
 
 	return e_success;
 }
@@ -73,7 +74,7 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	system("cls");
+	// system("cls");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -109,7 +110,7 @@ Status menu(AddressBook *address_book)
 
 		option = get_option(NUM, "");
 
-		if ((address_book-> count == 0) && (option != e_add_contact))
+		if ((address_book->count == 0) && (option != e_add_contact))
 		{
 			get_option(NONE, "No entries found!!. Would you like to add? Use Add Contacts");
 
@@ -118,27 +119,28 @@ Status menu(AddressBook *address_book)
 
 		switch (option)
 		{
-			case e_add_contact:
-				add_contacts(address_book);
-				break;
-			case e_search_contact:
-				search_contact(address_book);
-				break;
-			case e_edit_contact:
-				edit_contact(address_book);
-				break;
-			case e_delete_contact:
-				delete_contact(address_book);
-				break;
-			case e_list_contacts:
-				break;
-				/* Add your implementation to call list_contacts function here */
-			case e_save:
-				save_file(address_book);
-				break;
-			case e_exit:
-				exit(0);
-				break;
+		case e_add_contact:
+			add_contacts(address_book);
+			break;
+		case e_search_contact:
+			search_contact(address_book);
+			break;
+		case e_edit_contact:
+			edit_contact(address_book);
+			break;
+		case e_delete_contact:
+			delete_contact(address_book);
+			break;
+		case e_list_contacts:
+			break;
+			/* Add your implementation to call list_contacts function here */
+		case e_save:
+			save_file(address_book);
+			// save_prompt(address_book); PROMPTS THE SAVE MENU
+			break;
+		case e_exit:
+			exit(0);
+			break;
 		}
 	} while (option != e_exit);
 
@@ -149,7 +151,7 @@ Status add_contacts(AddressBook *address_book)
 {
 	ContactInfo person;
 	int option;
-	int test;
+
 	strncpy(*person.name, " ", sizeof(person.name));
 	strncpy(*person.phone_numbers, " ", sizeof(person.phone_numbers));
 	strncpy(*person.email_addresses, " ", sizeof(person.email_addresses));
@@ -173,14 +175,20 @@ Status add_contacts(AddressBook *address_book)
 		case e_second_opt:
 			printf("Enter the name: ");
 			scanf("%s", person.name);
+			fprintf(address_book->fp, *person.name);
+			fprintf(address_book->fp, "\n");
 			break;
 		case e_third_opt:
 			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
 			scanf("%s", person.phone_numbers);
+			fprintf(address_book->fp, *person.phone_numbers);
+			fprintf(address_book->fp, "\n");
 			break;
 		case e_fourth_opt:
 			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
 			scanf("%s", person.email_addresses);
+			fprintf(address_book->fp, *person.email_addresses);
+			fprintf(address_book->fp, "\n");
 			break;
 		}
 		getchar();
