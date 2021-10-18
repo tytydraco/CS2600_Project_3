@@ -226,49 +226,89 @@ Status edit_contact(AddressBook *address_book)
 	/* Add the functionality for edit contacts here */
 }
 
+Status delete(AddressBook *address_book, int index) {
+	return e_success;
+}
+
 Status delete_contact(AddressBook *address_book)
 {
 	/* Add the functionality for delete contacts here */
 
 	int option;
 
-	do
+	menu_header("Delete Contact By:\n");
+	printf("0. Back\n");
+	printf("1. Name\n");
+	printf("2. Phone No\n");
+	printf("3. Email ID\n");
+	printf("4. Serial No\n");
+	printf("\nPlease select an option: ");
+
+	option = get_option(NUM, "");
+
+	switch (option)
 	{
-		menu_header("Delete Contact By:\n");
-		printf("0. Back\n");
-		printf("1. Name\n");
-		printf("2. Phone No\n");
-		printf("3. Email ID\n");
-		printf("4. Serial No\n");
-		printf("\nPlease select an option: ");
+	case 0:
+		menu(address_book);
+		break;
+	case 1:
+		char target_name[NAME_LEN];
+		printf("Enter name: ");
+		scanf("%s", target_name);
 
-		option = get_option(NUM, "");
+		for (int i = 0; i < address_book->count; i++) {
+			ContactInfo* contact = &address_book->list[i];
 
-		switch (option)
-		{
-		case 0:
-			menu(address_book);
-			break;
-		case 1:
-			printf("Enter the name: ");
-			//scanf("%s", person.name);
-			break;
-		case 2:
-			printf("Enter Phone Number: ");
-			//scanf("%s", person.phone_numbers);
-			break;
-		case 3:
-			printf("Enter Email ID: ");
-			//scanf("%s", person.email_addresses);
-			break;
-		case 4:
-			printf("Enter Serial No: ");
-			//scanf("%s", person.s_no);
-			break;
+			for (int j = 0; j < NAME_COUNT; j++) {
+				if (strcmp(target_name, contact->name[j]) == 0)
+					return delete(address_book, i);
+			}
 		}
-		getchar();
+		return e_no_match;
+	case 2:
+		char target_phone[NUMBER_LEN];
+		printf("Enter phone number: ");
+		scanf("%s", target_phone);
 
-	} while (option != 0);
+		for (int i = 0; i < address_book->count; i++) {
+			ContactInfo* contact = &address_book->list[i];
+
+			for (int j = 0; j < PHONE_NUMBER_COUNT; j++) {
+				if (strcmp(target_phone, contact->phone_numbers[j]) == 0)
+					return delete(address_book, i);
+			}
+		}
+		return e_no_match;
+	case 3:
+		char target_email[EMAIL_ID_LEN];
+		printf("Enter email id: ");
+		scanf("%s", target_email);
+
+		for (int i = 0; i < address_book->count; i++) {
+			ContactInfo* contact = &address_book->list[i];
+
+			for (int j = 0; j < EMAIL_ID_COUNT; j++) {
+				if (strcmp(target_email, contact->email_addresses[j]) == 0)
+					return delete(address_book, i);
+			}
+		}
+		return e_no_match;
+	case 4:
+		int target_serial;
+		printf("Enter serial no: ");
+		scanf("%d", &target_serial);
+
+		for (int i = 0; i < address_book->count; i++) {
+			ContactInfo* contact = &address_book->list[i];
+
+			if (target_serial == contact->si_no)
+				return delete(address_book, i);
+		}
+		return e_no_match;
+
+		break;
+	}
+	getchar();
 
 	return e_success;
 }
