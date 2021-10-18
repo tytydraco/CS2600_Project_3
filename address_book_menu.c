@@ -187,24 +187,26 @@ Status add_contacts(AddressBook *address_book)
 			printf("Enter the name: ");
 			scanf("%s", person.name);
 			fprintf(address_book->fp, *person.name);
-			fprintf(address_book->fp, "\n");
+			fprintf(address_book->fp, FIELD_DELIMITER);
 			break;
 		case 2:
 			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
 			scanf("%s", person.phone_numbers);
 			fprintf(address_book->fp, *person.phone_numbers);
-			fprintf(address_book->fp, "\n");
+			fprintf(address_book->fp, FIELD_DELIMITER);
 			break;
 		case 3:
 			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
 			scanf("%s", person.email_addresses);
 			fprintf(address_book->fp, *person.email_addresses);
-			fprintf(address_book->fp, "\n");
+			fprintf(address_book->fp, FIELD_DELIMITER);
 			break;
 		}
 		getchar();
 
 	} while (option != 0);
+
+	fprintf(address_book->fp, NEXT_ENTRY);
 
 	return e_success;
 }
