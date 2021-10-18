@@ -10,7 +10,7 @@
 
 int get_option(int type, const char *msg)
 {
-	printf("%s: ", msg);
+	printf("%s", msg);
 
 	if (type == NUM) {
 		int num;
@@ -56,7 +56,7 @@ Status save_prompt(AddressBook *address_book)
 
 		option = get_option(CHAR, "\rEnter 'N' to Ignore and 'Y' to Save: ");
 
-		if (option == 'Y')
+		if (option == 'Y' || option == 'y')
 		{
 			save_file(address_book);
 			printf("Exiting. Data saved in %s\n", DEFAULT_FILE);
@@ -85,7 +85,7 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	// system("cls");
+	system("cls");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -105,8 +105,7 @@ void main_menu(void)
 	printf("4. Delete Contact\n");
 	printf("5. List Contacts\n");
 	printf("6. Save\n");
-	printf("\n");
-	printf("Please select an option: ");
+	printf("\nPlease select an option: ");
 }
 
 Status menu(AddressBook *address_book)
@@ -147,9 +146,12 @@ Status menu(AddressBook *address_book)
 			/* Add your implementation to call list_contacts function here */
 		case e_save:
 			save_file(address_book);
-			// save_prompt(address_book); PROMPTS THE SAVE MENU
+			getchar();
+			printf("Done. Please enter a key to continue: ");
+			getchar();
 			break;
 		case e_exit:
+			save_prompt(address_book);
 			exit(0);
 			break;
 		}
@@ -180,22 +182,22 @@ Status add_contacts(AddressBook *address_book)
 
 		switch (option)
 		{
-		case 0:
+		case e_first_opt:
 			menu(address_book);
 			break;
-		case 1:
+		case e_second_opt:
 			printf("Enter the name: ");
 			scanf("%s", person.name);
 			fprintf(address_book->fp, *person.name);
 			fprintf(address_book->fp, FIELD_DELIMITER);
 			break;
-		case 2:
+		case e_third_opt:
 			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
 			scanf("%s", person.phone_numbers);
 			fprintf(address_book->fp, *person.phone_numbers);
 			fprintf(address_book->fp, FIELD_DELIMITER);
 			break;
-		case 3:
+		case e_fourth_opt:
 			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
 			scanf("%s", person.email_addresses);
 			fprintf(address_book->fp, *person.email_addresses);
@@ -235,8 +237,12 @@ Status delete_contact(AddressBook *address_book)
 	/* Add the functionality for delete contacts here */
 
 	int option;
+	char target_name[NAME_LEN];
+	char target_phone[NUMBER_LEN];
+	char target_email[EMAIL_ID_LEN];
+	int target_serial;
 
-	menu_header("Delete Contact By:\n");
+	menu_header("Search Contact to Delete Contact by:\n");
 	printf("0. Back\n");
 	printf("1. Name\n");
 	printf("2. Phone No\n");
@@ -252,8 +258,8 @@ Status delete_contact(AddressBook *address_book)
 		menu(address_book);
 		break;
 	case 1:
-		char target_name[NAME_LEN];
-		printf("Enter name: ");
+		
+		printf("Enter the Name: ");
 		scanf("%s", target_name);
 
 		for (int i = 0; i < address_book->count; i++) {
@@ -266,8 +272,8 @@ Status delete_contact(AddressBook *address_book)
 		}
 		return e_no_match;
 	case 2:
-		char target_phone[NUMBER_LEN];
-		printf("Enter phone number: ");
+		
+		printf("Enter Phone Number: ");
 		scanf("%s", target_phone);
 
 		for (int i = 0; i < address_book->count; i++) {
@@ -280,8 +286,8 @@ Status delete_contact(AddressBook *address_book)
 		}
 		return e_no_match;
 	case 3:
-		char target_email[EMAIL_ID_LEN];
-		printf("Enter email id: ");
+		
+		printf("Enter Email ID: ");
 		scanf("%s", target_email);
 
 		for (int i = 0; i < address_book->count; i++) {
@@ -294,8 +300,8 @@ Status delete_contact(AddressBook *address_book)
 		}
 		return e_no_match;
 	case 4:
-		int target_serial;
-		printf("Enter serial no: ");
+		
+		printf("Enter Serial No: ");
 		scanf("%d", &target_serial);
 
 		for (int i = 0; i < address_book->count; i++) {
