@@ -85,11 +85,11 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-#ifdef __linux__
-	system("clear");
-#else
-	system("cls");
-#endif
+	// #ifdef __linux__
+	// 	system("clear");
+	// #else
+	// 	system("cls");
+	// #endif
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -166,20 +166,20 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	ContactInfo person;
+	ContactInfo contact;
 	int option;
 
-	strncpy(*person.name, " ", sizeof(person.name));
-	strncpy(*person.phone_numbers, " ", sizeof(person.phone_numbers));
-	strncpy(*person.email_addresses, " ", sizeof(person.email_addresses));
+	strncpy(*contact.name, " ", sizeof(contact.name));
+	strncpy(*contact.phone_numbers, " ", sizeof(contact.phone_numbers));
+	strncpy(*contact.email_addresses, " ", sizeof(contact.email_addresses));
 
 	do
 	{
 		menu_header("Add Contact:\n");
 		printf("0. Back\n");
-		printf("1. Name\t\t: %s\n", person.name);
-		printf("2. Phone No 1\t: %s\n", person.phone_numbers);
-		printf("3. Email ID 1\t: %s\n", person.email_addresses);
+		printf("1. Name\t\t: %s\n", contact.name[0]);
+		printf("2. Phone No 1\t: %s\n", contact.phone_numbers[0]);
+		printf("3. Email ID 1\t: %s\n", contact.email_addresses[0]);
 		printf("\nPlease select an option: ");
 
 		option = get_option(NUM, "");
@@ -187,32 +187,70 @@ Status add_contacts(AddressBook *address_book)
 		switch (option)
 		{
 		case e_first_opt:
-			menu(address_book);
 			break;
 		case e_second_opt:
 			printf("Enter the name: ");
-			scanf("%s", person.name);
-			fprintf(address_book->fp, *person.name);
-			fprintf(address_book->fp, FIELD_DELIMITER);
+			scanf("%s", &contact.name[0]);
+			add(address_book, contact, e_second_opt);
 			break;
 		case e_third_opt:
 			printf("Enter Phone Number 1: [Please reenter the same option of alternate Phone Number]: ");
-			scanf("%s", person.phone_numbers);
-			fprintf(address_book->fp, *person.phone_numbers);
-			fprintf(address_book->fp, FIELD_DELIMITER);
+			scanf("%s", &contact.phone_numbers[0]);
+			add(address_book, contact, e_third_opt);
 			break;
 		case e_fourth_opt:
 			printf("Enter Email ID 1: [Please reenter the same option of alternate Email ID]: ");
-			scanf("%s", person.email_addresses);
-			fprintf(address_book->fp, *person.email_addresses);
-			fprintf(address_book->fp, FIELD_DELIMITER);
+			scanf("%s", &contact.email_addresses[0]);
+			add(address_book, contact, e_fourth_opt);
 			break;
 		}
 		getchar();
 
 	} while (option != 0);
 
+	// printf("Name: %s\n", address_book->list[address_book->count].name[0]);
+	// printf("TEST2\n");
+	// printf("Phone: %s\n", address_book->list[address_book->count].phone_numbers[0]);
+	// printf("Email: %s\n", address_book->list[address_book->count].email_addresses[0]);
+
+	// contact.si_no = address_book->count + 1;
+	printf("TEST1\n");
+	address_book->list[address_book->count-1] = contact;
+	printf("TEST2\n");
+	address_book->count++;
+
 	fprintf(address_book->fp, NEXT_ENTRY);
+
+	return e_success;
+}
+
+Status add(AddressBook *address_book, ContactInfo contact, int option)
+{
+	// printf("%d\n", sizeof(address_book->list->phone_numbers) / sizeof(address_book->list->phone_numbers[0]));
+	switch(option)
+	{
+		case e_second_opt:
+			if(strlen(*contact.name) < NAME_LEN && sizeof(address_book->count < NAME_COUNT))
+			{
+				fprintf(address_book->fp, *contact.name);
+				fprintf(address_book->fp, FIELD_DELIMITER);
+			}
+			break;
+		case e_third_opt:
+			if (strlen(*contact.phone_numbers) < NUMBER_LEN && sizeof(address_book->list->phone_numbers) <= 160)
+			{
+				fprintf(address_book->fp, *contact.phone_numbers);
+				fprintf(address_book->fp, FIELD_DELIMITER);
+			}
+			break;
+		case e_fourth_opt:
+			if (strlen(*contact.email_addresses) < EMAIL_ID_LEN && sizeof(address_book->list->email_addresses) <= 160)
+			{
+				fprintf(address_book->fp, *contact.email_addresses);
+				fprintf(address_book->fp, FIELD_DELIMITER);
+			}
+			break;
+	}
 
 	return e_success;
 }
