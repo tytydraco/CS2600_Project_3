@@ -70,8 +70,53 @@ Status save_prompt(AddressBook *address_book)
 	return e_success;
 }
 
-Status list_contacts(AddressBook *address_book, const char *title, int *index, const char *msg, Modes mode)
+Status list_contacts(AddressBook *address_book, int index)
 {
+	int option;
+
+	menu_header("All Contacts:\n");
+	printf("(Page %d of %d):\n", index, (address_book->count));
+	printf("0. Back\n");
+	printf("1. Next Page\n");
+	printf("2. Last Page\n");
+
+	int startingIndex = WINDOW_SIZE*index;
+
+	while ((startingIndex < (address_book->count)) && (startingIndex < (WINDOW_SIZE*(index+1)))) {
+		printf("Loop: %c\n", i);
+		printf("%p\n", (&address_book->list[i].name[1][0]));
+		startingIndex++;
+	}
+
+	for (int i = (WINDOW_SIZE*index); i < ((address_book->count)); i++) {
+		printf("Loop: %c\n", i);
+		printf("%p\n", (&address_book->list[i].name[1][0]));
+	}
+
+	printf("\nPlease select an option: ");
+	option = get_option(NUM, "");
+	printf("%d\n", option);
+
+	switch (option)
+	{
+	case 0:
+		printf("Detected 0\n");
+		menu(address_book);
+		break;
+	case 1:
+		printf("Detected 1\n");
+		if (index < (address_book->count/WINDOW_SIZE)) {
+			index++;
+			list_contacts(address_book, index);
+		}
+	case 2:
+		printf("Detected 2\n");
+		if (index > 0) {
+			index--;
+			list_contacts(address_book, index);
+		}	
+	}
+
 	/* 
 	 * Add code to list all the contacts availabe in address_book.csv file
 	 * Should be menu based
@@ -146,8 +191,8 @@ Status menu(AddressBook *address_book)
 			delete_contact(address_book);
 			break;
 		case e_list_contacts:
+			list_contacts(address_book, 0);
 			break;
-			/* Add your implementation to call list_contacts function here */
 		case e_save:
 			save_file(address_book);
 			getchar();
