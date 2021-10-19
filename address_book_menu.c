@@ -265,10 +265,92 @@ Status search_contact(AddressBook *address_book)
 	/* Add the functionality for search contacts here */
 }
 
-Status edit_contact(AddressBook *address_book)
-{
-	/* Add the functionality for edit contacts here */
+Status edit_contact(AddressBook *address_book) {}
+    int option;
+	char target_name[NAME_LEN];
+	char target_phone[NUMBER_LEN];
+	char target_email[EMAIL_ID_LEN];
+	int target_serial;
+
+	menu_header("Search Contact to Edit by:\n");
+	printf("0. Back\n");
+	printf("1. Name\n");
+	printf("2. Phone No\n");
+	printf("3. Email ID\n");
+	printf("4. Serial No\n");
+	printf("\nPlease select an option: ");
+
+	option = get_option(NUM, "");
+
+	switch (option)
+	{
+	case 0:
+		menu(address_book);
+		break;
+	case 1:
+		printf("Enter the Name: ");
+		scanf("%s", target_name);
+
+		for (int i = 0; i < address_book->count - 1; i++) {
+			ContactInfo* contact = &address_book->list[i];
+
+			for (int j = 0; j < NAME_COUNT - 1; j++) {
+				if (strcmp(target_name, contact->name[j]) == 0) {
+					return edit(address_book, i);
+				}
+			}
+		}
+		printf("Contact not found!\n");
+		return e_no_match;
+
+	case 2:
+		printf("Enter Phone Number: ");
+		scanf("%s", target_phone);
+		for (int i = 0; i < address_book->count - 1; i++) {
+			ContactInfo* contact = &address_book->list[i];
+			for (int j = 0; j < PHONE_NUMBER_COUNT - 1; j++) {
+				if (strcmp(target_phone, contact->phone_numbers[j]) == 0)
+					return edit(address_book, i);
+			}
+		}
+		printf("Contact not found!\n");
+		return e_no_match;
+
+	case 3:
+		printf("Enter Email ID: ");
+		scanf("%s", target_email);
+		for (int i = 0; i < address_book->count - 1; i++) {
+			ContactInfo* contact = &address_book->list[i];
+
+			for (int j = 0; j < EMAIL_ID_COUNT - 1; j++) {
+				if (strcmp(target_email, contact->email_addresses[j]) == 0)
+					return edit(address_book, i);
+			}
+		}
+		printf("Contact not found!\n");
+		return e_no_match;
+
+	case 4:
+		printf("Enter Serial No: ");
+		scanf("%d", &target_serial);
+		for (int i = 0; i < address_book->count - 1; i++) {
+			ContactInfo* contact = &address_book->list[i];
+			if (target_serial == contact->si_no)
+				return edit(address_book, i);
+		}
+		printf("Contact not found!\n");
+		return e_no_match;
+	}
+	getchar();
+	return e_success;
 }
+
+Status edit(AddressBook *address_book, int index)
+{
+	return e_success;
+}
+
+
 
 Status delete(AddressBook *address_book, int index) {
 	unsigned int last_index = address_book->count - 1;

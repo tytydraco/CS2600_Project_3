@@ -16,6 +16,7 @@ Status save_prompt(AddressBook *address_book);
 Status add_contacts(AddressBook *address_book);
 Status search_contact(AddressBook *address_book);
 Status edit_contact(AddressBook *address_book);
+Status edit(AddressBook *address_book, int index);
 Status delete_contact(AddressBook *address_book);
 Status list_contacts(AddressBook *address_book, int index);
 
