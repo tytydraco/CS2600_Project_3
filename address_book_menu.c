@@ -72,6 +72,7 @@ Status save_prompt(AddressBook *address_book)
 
 Status list_contacts(AddressBook *address_book, int index)
 {
+	printf("Index is: %d\n", index);
 	int option;
 
 	menu_header("All Contacts:\n");
@@ -83,38 +84,30 @@ Status list_contacts(AddressBook *address_book, int index)
 	int startingIndex = WINDOW_SIZE*index;
 
 	while ((startingIndex < (address_book->count)) && (startingIndex < (WINDOW_SIZE*(index+1)))) {
-		printf("Loop: %c\n", i);
-		printf("%p\n", (&address_book->list[i].name[1][0]));
+		printf("Loop: %c\n", startingIndex);
+		printf("%p\n", (&address_book->list[startingIndex].name[1][0]));
 		startingIndex++;
-	}
-
-	for (int i = (WINDOW_SIZE*index); i < ((address_book->count)); i++) {
-		printf("Loop: %c\n", i);
-		printf("%p\n", (&address_book->list[i].name[1][0]));
 	}
 
 	printf("\nPlease select an option: ");
 	option = get_option(NUM, "");
 	printf("%d\n", option);
 
-	switch (option)
-	{
-	case 0:
+	if (option == 0) {
 		printf("Detected 0\n");
 		menu(address_book);
-		break;
-	case 1:
+	} else if (option == 1) {
 		printf("Detected 1\n");
 		if (index < (address_book->count/WINDOW_SIZE)) {
 			index++;
 			list_contacts(address_book, index);
 		}
-	case 2:
+	} else if (option == 2) {
 		printf("Detected 2\n");
 		if (index > 0) {
 			index--;
 			list_contacts(address_book, index);
-		}	
+		}
 	}
 
 	/* 
