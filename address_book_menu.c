@@ -345,12 +345,55 @@ Status edit_contact(AddressBook *address_book) {}
 	return e_success;
 }
 
-Status edit(AddressBook *address_book, int index)
-{
+Status edit(AddressBook *address_book, int index) {
+	ContactInfo replacement;
+	int option;
+
+	strncpy(*replacement.name, " ", sizeof(replacement.name));
+	strncpy(*replacement.phone_numbers, " ", sizeof(replacement.phone_numbers));
+	strncpy(*replacement.email_addresses, " ", sizeof(replacement.email_addresses));
+
+	while (option != 0) {
+		menu_header("Edit Contact:\n");
+		printf("0. Back\n");
+		printf("1. Name\t\t: %s\n", replacement.name);
+		printf("2. Phone No 1\t: %s\n", replacement.phone_numbers);
+		printf("3. Email ID 1\t: %s\n", replacement.email_addresses);
+		printf("\nPlease select an option: ");
+
+		option = get_option(NUM, "");
+
+		switch (option)
+		{
+		case e_first_opt:
+			menu(address_book);
+			break;
+		case e_second_opt:
+			printf("Enter the name: ");
+			scanf("%s", replacement.name);
+			fprintf(address_book->fp, *replacement.name);
+			fprintf(address_book->fp, FIELD_DELIMITER);
+			break;
+		case e_third_opt:
+			printf("Enter Phone Number: ");
+			scanf("%s", replacement.phone_numbers);
+			fprintf(address_book->fp, *replacement.phone_numbers);
+			fprintf(address_book->fp, FIELD_DELIMITER);
+			break;
+		case e_fourth_opt:
+			printf("Enter Email: ");
+			scanf("%s", replacement.email_addresses);
+			fprintf(address_book->fp, *replacement.email_addresses);
+			fprintf(address_book->fp, FIELD_DELIMITER);
+			break;
+		}
+		getchar();
+
+	}
+	ContactInfo oldContact = address_book->list[index];
+	oldContact = replacement;
 	return e_success;
 }
-
-
 
 Status delete(AddressBook *address_book, int index) {
 	unsigned int last_index = address_book->count - 1;

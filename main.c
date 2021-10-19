@@ -14,7 +14,6 @@ int main(void)
 
 	/* Load the file from .csv file if any */
 	ret = load_file(&address_book);
-	printf("%d\n", (address_book.count));
 
 	if (ret == e_success)
 	{
