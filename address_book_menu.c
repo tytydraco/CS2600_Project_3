@@ -8,6 +8,14 @@
 #include "address_book_fops.h"
 #include "address_book_menu.h"
 
+Status AddressBookInit(AddressBook *address_book)
+{
+	address_book->count = 0;
+	address_book->list = (ContactInfo *)malloc(sizeof(ContactInfo)*100);
+
+	return e_success;
+}
+
 int get_option(int type, const char *msg)
 {
 	printf("%s", msg);
@@ -158,6 +166,7 @@ void main_menu(void)
 
 Status menu(AddressBook *address_book)
 {
+	AddressBookInit(address_book);
 	ContactInfo backup;
 	Status ret;
 	int option;
@@ -307,18 +316,12 @@ Status add_contacts(AddressBook *address_book)
 		fprintf(address_book->fp, FIELD_DELIMITER);
 	}
 
+	address_book->list[address_book->count] = contact;
 	address_book->count++;
 
-	/*Testing for adding contact to contact list*/
 	// printf("Name: %s\n", address_book->list[address_book->count].name[0]);
-	// printf("TEST2\n");
 	// printf("Phone: %s\n", address_book->list[address_book->count].phone_numbers[0]);
 	// printf("Email: %s\n", address_book->list[address_book->count].email_addresses[0]);
-
-	// printf("TEST1\n");
-	// address_book->list->name[0] = "hello";
-	// address_book->list[address_book->count - 1] = contact;
-	// printf("TEST2\n");
 
 	fprintf(address_book->fp, NEXT_ENTRY);
 
@@ -494,18 +497,8 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 				printf("Press: [q] | Cancel: [q]:   ");
 				quit = getchar();
 			} while (quit != 'q');
-			
-			
-
 		}
-		
-
-
-
 	}
-
-
-	
 }
 
 Status search_contact(AddressBook *address_book)
@@ -564,8 +557,9 @@ Status search_contact(AddressBook *address_book)
 	}
 }
 
-Status edit_contact(AddressBook *address_book) {}
-    int option;
+Status edit_contact(AddressBook *address_book)
+{
+   int option;
 	char target_name[NAME_LEN];
 	char target_phone[NUMBER_LEN];
 	char target_email[EMAIL_ID_LEN];
