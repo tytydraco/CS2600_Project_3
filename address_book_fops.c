@@ -8,10 +8,17 @@
 
 #include "address_book.h"
 
+void AddressBookInit(AddressBook *address_book)
+{
+	address_book->count = 0;
+	address_book->list = (ContactInfo *)calloc(100, sizeof(ContactInfo));
+}
+
 Status load_file(AddressBook *address_book)
 {
-	int ret;
+	int ret = 0;
 
+	// Checks for file existence
 	if ((address_book->fp = fopen(DEFAULT_FILE, "r")))
 	{
 		fclose(address_book->fp);
@@ -19,7 +26,14 @@ Status load_file(AddressBook *address_book)
 	}
 
 	if (ret == 1)
+	{
 		address_book->fp = fopen(DEFAULT_FILE, "a+");
+		AddressBookInit(address_book);
+		// if(address_book->fp != NULL)
+		// {
+		// 	int counter = 0;
+		// }
+	}
 	else
 		address_book->fp = fopen(DEFAULT_FILE, "w");
 
@@ -32,7 +46,7 @@ Status save_file(AddressBook *address_book)
 	 * Write contacts back to file.
 	 * Re write the complete file currently
 	 */ 
-	// address_book->fp = fopen(DEFAULT_FILE, "w"); IDK WHY THIS IS HERE. IT RESETS ENTIRE CSV FILE
+	// address_book->fp = fopen(DEFAULT_FILE, "w"); 
 
 	if (address_book->fp == NULL)
 	{
