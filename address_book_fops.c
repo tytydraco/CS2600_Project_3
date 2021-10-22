@@ -32,7 +32,9 @@ Status load_file(AddressBook *address_book)
 
 		address_book->fp = fopen(DEFAULT_FILE, "a+");
 		AddressBookInit(address_book);
+		
 
+		
 		//************* populating address_book from file.
 		char chr;
 		int counter = 0;
@@ -87,7 +89,7 @@ Status load_file(AddressBook *address_book)
 				}
 				
 
-				ptr->si_no = iterator + 1;
+				ptr->si_no = iterator + 1; //assigning serial no value
 				chr = getc(address_book->fp); // the previous char was a comma, now it is EOF or \n
 				counter = 0;
 
@@ -109,8 +111,8 @@ Status load_file(AddressBook *address_book)
 
 	//TESTING
 
-	ContactInfo test1 = *(address_book->list + 0);
-	ContactInfo test2 = *(address_book->list + sizeof(ContactInfo));
+	//ContactInfo test1 = *(address_book->list + 0); 
+	//ContactInfo test2 = *(address_book->list + sizeof(ContactInfo));
 
 
 
