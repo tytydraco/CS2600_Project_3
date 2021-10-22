@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 #include "address_book.h"
-#include "address_book_fops.h"
+#include "address_book_fops.c"
 #include "address_book_menu.h"
 
 int get_option(int type, const char *msg)
@@ -172,16 +172,18 @@ Status menu(AddressBook *address_book)
 
 	do
 	{
-		main_menu();
+		main_menu(); //prints main menu
 
 		option = get_menu_option();
 
+		//what is this supposed to do?????????????????????????
+		/*
 		if ((address_book->count == 0) && (option != e_add_contact))
 		{
 			get_option(NONE, "No entries found!!. Would you like to add? Use Add Contacts");
 
 			continue;
-		}
+		}*/
 
 		switch (option)
 		{
@@ -192,7 +194,7 @@ Status menu(AddressBook *address_book)
 			search_contact(address_book);
 			break;
 		case e_edit_contact:
-			edit_contact(address_book);
+//			edit_contact(address_book);
 			break;
 		case e_delete_contact:
 			delete_contact(address_book);
@@ -248,7 +250,7 @@ Status add_contacts(AddressBook *address_book)
 			break;
 		case e_second_opt:
 			printf("Enter the name: ");
-			scanf("%s", &contact.name[0]);
+			scanf("%s", &contact.name[0][0]);
 			if (strlen(*contact.name) > NAME_LEN)
 			{
 				printf("ERROR. Invalid Length of Name. Please enter a key to continue: ");
@@ -259,7 +261,7 @@ Status add_contacts(AddressBook *address_book)
 			if (phoneCount < PHONE_NUMBER_COUNT)
 			{
 				printf("Enter Phone Number %d: [Please reenter the same option of alternate Phone Number]: ", phoneCount + 1);
-				scanf("%s", &contact.phone_numbers[phoneCount]);
+				scanf("%s", &contact.phone_numbers[phoneCount][0]);
 				if (strlen(contact.phone_numbers[phoneCount]) > NUMBER_LEN)
 				{
 					printf("ERROR. Invalid Length of Phone Number. Please enter a key to continue: ");
@@ -278,8 +280,8 @@ Status add_contacts(AddressBook *address_book)
 			if (emailCount < EMAIL_ID_COUNT)
 			{
 				printf("Enter Email ID %d: [Please reenter the same option of alternate Email ID]: ", emailCount + 1);
-				scanf("%s", &contact.email_addresses[emailCount]);
-				if (strlen(contact.email_addresses[emailCount]) > EMAIL_ID_LEN)
+				scanf("%s", &contact.email_addresses[emailCount][0]);
+				if (strlen(&contact.email_addresses[emailCount][0]) > EMAIL_ID_LEN)
 				{
 					printf("ERROR. Invalid Length of Email. Please enter a key to continue: ");
 					getchar();
@@ -301,7 +303,7 @@ Status add_contacts(AddressBook *address_book)
 	contact.si_no = address_book->count + 1;
 	fprintf(address_book->fp, "%d", contact.si_no);
 	fprintf(address_book->fp, FIELD_DELIMITER);
-	fprintf(address_book->fp, *contact.name);
+	fprintf(address_book->fp, "%s", &contact.name[0][0]);
 	fprintf(address_book->fp, FIELD_DELIMITER);
 
 	for (int i = 0; i < phoneCount; i++)
@@ -310,10 +312,29 @@ Status add_contacts(AddressBook *address_book)
 		fprintf(address_book->fp, FIELD_DELIMITER);
 	}
 
+	if (phoneCount < PHONE_NUMBER_COUNT) //printing delimiter to store empty phone spaces
+	{
+		for (int i = 0; i < PHONE_NUMBER_COUNT-phoneCount; i++)
+		{
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		
+	}
+	
+
 	for (int i = 0; i < emailCount; i++)
 	{
-		fprintf(address_book->fp, contact.email_addresses[i]);
+		fprintf(address_book->fp, "%s", &contact.email_addresses[i][0]);
 		fprintf(address_book->fp, FIELD_DELIMITER);
+	}
+
+		if (emailCount < EMAIL_ID_COUNT) //printing delimiter to store empty email spaces
+	{
+		for (int i = 0; i < EMAIL_ID_COUNT-emailCount; i++)
+		{
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		
 	}
 
 	address_book->list[address_book->count] = contact;
@@ -335,10 +356,6 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 	int found = 0;
 	ContactInfo contact;
 
-	if((address_book=fopen("AddressBook.txt","r"))== NULL)
-		printf("**The file is empty** !!\n\n");
-	else
-	{
 		switch (field)
 		{
 			case 1: //name
@@ -429,8 +446,8 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 				for (int i = 0; i < 4; i++)
 					printf(" ");
 			}
-			printf(":%s", contact.name);
-			for (int i = 32 - strlen(contact.name); i > 0; i--)
+			printf(":%s", &contact.name[0][0]);
+			for (int i = 32 - strlen(&contact.name[0][0]); i > 0; i--)
 			{
 				printf(" ");
 			}
@@ -500,7 +517,7 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 				quit = getchar();
 			} while (quit != 'q');
 		}
-	}
+	
 }
 
 Status search_contact(AddressBook *address_book)
@@ -559,6 +576,7 @@ Status search_contact(AddressBook *address_book)
 	}
 }
 
+/*
 Status edit_contact(AddressBook *address_book)
 {
 	int option;
@@ -646,8 +664,9 @@ Status edit_contact(AddressBook *address_book)
 	}
 	getchar();
 	return e_success;
-}
+}*/
 
+/*
 Status edit(AddressBook *address_book, int index)
 {
 	ContactInfo replacement;
@@ -697,7 +716,7 @@ Status edit(AddressBook *address_book, int index)
 	ContactInfo oldContact = address_book->list[index];
 	oldContact = replacement;
 	return e_success;
-}
+}*/
 
 Status delete (AddressBook *address_book, int index)
 {
