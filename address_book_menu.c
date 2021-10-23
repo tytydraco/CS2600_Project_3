@@ -71,7 +71,7 @@ Status save_prompt(AddressBook *address_book)
 		}
 	} while (option != 'N');
 
-	free(address_book->list);
+	//free(address_book->list); //why set this free? if the person wants to continue using the address book, this will throw off the program.
 
 	return e_success;
 }
@@ -176,14 +176,13 @@ Status menu(AddressBook *address_book)
 
 		option = get_menu_option();
 
-		//what is this supposed to do?????????????????????????
-		/*
+
 		if ((address_book->count == 0) && (option != e_add_contact))
 		{
-			get_option(NONE, "No entries found!!. Would you like to add? Use Add Contacts");
+			get_option(NONE, "No entries found! Would you like to add? Use Add Contacts");
 
 			continue;
-		}*/
+		}
 
 		switch (option)
 		{
@@ -301,6 +300,7 @@ Status add_contacts(AddressBook *address_book)
 	} while (option != 0);
 
 	contact.si_no = address_book->count + 1;
+	/*
 	fprintf(address_book->fp, "%d", contact.si_no);
 	fprintf(address_book->fp, FIELD_DELIMITER);
 	fprintf(address_book->fp, "%s", &contact.name[0][0]);
@@ -335,7 +335,7 @@ Status add_contacts(AddressBook *address_book)
 			fprintf(address_book->fp, FIELD_DELIMITER);
 		}
 		
-	}
+	}*/
 
 	address_book->list[address_book->count] = contact;
 	address_book->count++;
@@ -346,10 +346,11 @@ Status add_contacts(AddressBook *address_book)
 	// 			 address_book->list[i].phone_numbers[0], address_book->list[i].email_addresses[0]);
 	// }
 
-	fprintf(address_book->fp, NEXT_ENTRY);
+	//fprintf(address_book->fp, NEXT_ENTRY);
 
 	return e_success;
 }
+
 
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
 {
@@ -378,7 +379,8 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 			case 2: //phone
 				for (int i = 0; i < address_book->count; i++)
 				{
-					ContactInfo contact = *(address_book->list + i*sizeof(ContactInfo));
+					//ContactInfo contact = *(address_book->list + i*sizeof(ContactInfo));
+					ContactInfo contact = address_book->list[i];
 
 					for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
 					{
@@ -437,14 +439,14 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 
 			char addContact;
 
-			do
-			{
-				printf("Would you like to add a new contact? y/n\n");
-				addContact = getchar();
-			} while (addContact != 'y' || addContact != 'n');
-			
+			printf("Would you like to add a new contact? y/n\n");
+			while ((getchar()) != '\n')
+				; //cleaning buffer
+			addContact = getchar();
+
 			if (addContact == 'y')
 				add_contacts(address_book);
+
 			
 			return e_no_match;
 			
@@ -594,7 +596,9 @@ Status search_contact(AddressBook *address_book)
 			flag = 1;
 			break;
 		default:
-			printf("\nTry again please: ");
+			printf("\nWrong input. Going back to main menu.");
+			flag = 1;
+			return e_back;
 			break;
 		}
 	}
@@ -688,9 +692,9 @@ Status edit_contact(AddressBook *address_book)
 	}
 	getchar();
 	return e_success;
-}*/
+}
 
-/*
+
 Status edit(AddressBook *address_book, int index)
 {
 	ContactInfo replacement;
@@ -740,7 +744,7 @@ Status edit(AddressBook *address_book, int index)
 	ContactInfo oldContact = address_book->list[index];
 	oldContact = replacement;
 	return e_success;
-}*/
+} */
 
 Status delete (AddressBook *address_book, int index)
 {

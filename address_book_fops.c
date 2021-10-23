@@ -123,6 +123,51 @@ Status load_file(AddressBook *address_book)
 Status save_file(AddressBook *address_book)
 {
 	/*
+	fprintf(address_book->fp, "%d", contact.si_no);
+	fprintf(address_book->fp, FIELD_DELIMITER);
+	fprintf(address_book->fp, "%s", &contact.name[0][0]);
+	fprintf(address_book->fp, FIELD_DELIMITER);
+
+	for (int i = 0; i < phoneCount; i++)
+	{
+		fprintf(address_book->fp, "%s", contact.phone_numbers[i]);
+		fprintf(address_book->fp, FIELD_DELIMITER);
+	}
+
+	if (phoneCount < PHONE_NUMBER_COUNT) //printing delimiter to store empty phone spaces
+	{
+		for (int i = 0; i < PHONE_NUMBER_COUNT-phoneCount; i++)
+		{
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		
+	}
+	
+
+	for (int i = 0; i < emailCount; i++)
+	{
+		fprintf(address_book->fp, "%s", &contact.email_addresses[i][0]);
+		fprintf(address_book->fp, FIELD_DELIMITER);
+	}
+
+		if (emailCount < EMAIL_ID_COUNT) //printing delimiter to store empty email spaces
+	{
+		for (int i = 0; i < EMAIL_ID_COUNT-emailCount; i++)
+		{
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		
+	}
+
+	//fprintf(address_book->fp, NEXT_ENTRY);
+	
+	*/
+	
+	
+	
+	
+	
+	/*
 	 * Write contacts back to file.
 	 * Re write the complete file currently
 	 */ 
