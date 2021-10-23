@@ -46,12 +46,34 @@ Status save_file(AddressBook *address_book)
 	 * Write contacts back to file.
 	 * Re write the complete file currently
 	 */ 
-	// address_book->fp = fopen(DEFAULT_FILE, "w"); 
-
-	if (address_book->fp == NULL)
+	
+	address_book->fp = fopen(DEFAULT_FILE, "w");
+	for (int i = 0; i < address_book->count; i++)
 	{
-		return e_fail;
+		fprintf(address_book->fp, "%d", address_book->list[i].si_no);
+		fprintf(address_book->fp, FIELD_DELIMITER);
+		fprintf(address_book->fp, "%s", address_book->list[i].name);
+		fprintf(address_book->fp, FIELD_DELIMITER);
+
+		for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
+		{
+			fprintf(address_book->fp, "%s", address_book->list[i].email_addresses[j]);
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+
+		for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
+		{
+			fprintf(address_book->fp, "%s", address_book->list[i].phone_numbers[j]);
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		fputs("\n", address_book->fp);
 	}
+
+
+		if (address_book->fp == NULL)
+		{
+			return e_fail;
+		}
 
 	/* 
 	 * Add the logic to save the file
