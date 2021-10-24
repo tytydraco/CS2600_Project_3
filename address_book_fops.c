@@ -94,7 +94,7 @@ Status load_file(AddressBook *address_book)
 				counter = 0;
 
 				
-				*(address_book->list + iterator*sizeof(ContactInfo)) = *ptr; //writting person into addressbook
+				address_book->list[iterator] = *ptr; //writting person into addressbook
 				
 				address_book->count++; 
 				iterator++;
@@ -122,90 +122,46 @@ Status load_file(AddressBook *address_book)
 
 Status save_file(AddressBook *address_book)
 {
-	/*
-	fprintf(address_book->fp, "%d", contact.si_no);
-	fprintf(address_book->fp, FIELD_DELIMITER);
-	fprintf(address_book->fp, "%s", &contact.name[0][0]);
-	fprintf(address_book->fp, FIELD_DELIMITER);
+    /*
+     * Write contacts back to file.
+     * Re write the complete file currently
+     */
+    
+    address_book->fp = fopen(DEFAULT_FILE, "w");
+    for (int i = 0; i < address_book->count; i++)
+    {
+        fprintf(address_book->fp, "%d", address_book->list[i].si_no);
+        fprintf(address_book->fp, FIELD_DELIMITER);
+        fprintf(address_book->fp, "%s", address_book->list[i].name[0]);
+        fprintf(address_book->fp, FIELD_DELIMITER);
 
-	for (int i = 0; i < phoneCount; i++)
-	{
-		fprintf(address_book->fp, "%s", contact.phone_numbers[i]);
-		fprintf(address_book->fp, FIELD_DELIMITER);
-	}
+        for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
+        {
+            fprintf(address_book->fp, "%s", address_book->list[i].phone_numbers[j]);
+            fprintf(address_book->fp, FIELD_DELIMITER);
+        }
 
-	if (phoneCount < PHONE_NUMBER_COUNT) //printing delimiter to store empty phone spaces
-	{
-		for (int i = 0; i < PHONE_NUMBER_COUNT-phoneCount; i++)
-		{
-			fprintf(address_book->fp, FIELD_DELIMITER);
-		}
-		
-	}
-	
+        for (int j = 0; j < EMAIL_ID_COUNT; j++)
+        {
+            fprintf(address_book->fp, "%s", address_book->list[i].email_addresses[j]);
+            fprintf(address_book->fp, FIELD_DELIMITER);
+        }
 
-	for (int i = 0; i < emailCount; i++)
-	{
-		fprintf(address_book->fp, "%s", &contact.email_addresses[i][0]);
-		fprintf(address_book->fp, FIELD_DELIMITER);
-	}
-
-		if (emailCount < EMAIL_ID_COUNT) //printing delimiter to store empty email spaces
-	{
-		for (int i = 0; i < EMAIL_ID_COUNT-emailCount; i++)
-		{
-			fprintf(address_book->fp, FIELD_DELIMITER);
-		}
-		
-	}
-
-	//fprintf(address_book->fp, NEXT_ENTRY);
-	
-	*/
-	
-	
-	
-	
-	
-	/*
-	 * Write contacts back to file.
-	 * Re write the complete file currently
-	 */ 
-	
-	address_book->fp = fopen(DEFAULT_FILE, "w");
-	for (int i = 0; i < address_book->count; i++)
-	{
-		fprintf(address_book->fp, "%d", address_book->list[i].si_no);
-		fprintf(address_book->fp, FIELD_DELIMITER);
-		fprintf(address_book->fp, "%s", address_book->list[i].name);
-		fprintf(address_book->fp, FIELD_DELIMITER);
-
-		for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
-		{
-			fprintf(address_book->fp, "%s", address_book->list[i].email_addresses[j]);
-			fprintf(address_book->fp, FIELD_DELIMITER);
-		}
-
-		for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
-		{
-			fprintf(address_book->fp, "%s", address_book->list[i].phone_numbers[j]);
-			fprintf(address_book->fp, FIELD_DELIMITER);
-		}
-		fputs("\n", address_book->fp);
-	}
+        fputs("\n", address_book->fp);
+    }
 
 
-		if (address_book->fp == NULL)
-		{
-			return e_fail;
-		}
+        if (address_book->fp == NULL)
+        {
+            return e_fail;
+        }
 
-	/* 
-	 * Add the logic to save the file
-	 * Make sure to do error handling
-	 */
+    /* 
+     * Add the logic to save the file
+     * Make sure to do error handling
+     */
 
-	fclose(address_book->fp);
+    fclose(address_book->fp);
 
-	return e_success;
+    return e_success;
 }
