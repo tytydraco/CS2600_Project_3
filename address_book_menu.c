@@ -300,9 +300,53 @@ Status add_contacts(AddressBook *address_book)
 	} while (option != 0);
 
 	contact.si_no = address_book->count + 1;
+	/*
+	fprintf(address_book->fp, "%d", contact.si_no);
+	fprintf(address_book->fp, FIELD_DELIMITER);
+	fprintf(address_book->fp, "%s", &contact.name[0][0]);
+	fprintf(address_book->fp, FIELD_DELIMITER);
+
+	for (int i = 0; i < phoneCount; i++)
+	{
+		fprintf(address_book->fp, "%s", contact.phone_numbers[i]);
+		fprintf(address_book->fp, FIELD_DELIMITER);
+	}
+
+	if (phoneCount < PHONE_NUMBER_COUNT) //printing delimiter to store empty phone spaces
+	{
+		for (int i = 0; i < PHONE_NUMBER_COUNT-phoneCount; i++)
+		{
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		
+	}
+	
+
+	for (int i = 0; i < emailCount; i++)
+	{
+		fprintf(address_book->fp, "%s", &contact.email_addresses[i][0]);
+		fprintf(address_book->fp, FIELD_DELIMITER);
+	}
+
+		if (emailCount < EMAIL_ID_COUNT) //printing delimiter to store empty email spaces
+	{
+		for (int i = 0; i < EMAIL_ID_COUNT-emailCount; i++)
+		{
+			fprintf(address_book->fp, FIELD_DELIMITER);
+		}
+		
+	}*/
 
 	address_book->list[address_book->count] = contact;
 	address_book->count++;
+
+	// for (int i = 0; i < address_book->count; i++)
+	// {
+	// 	printf("name: %s, number: %s, email: %s\n", address_book->list[i].name[0],
+	// 			 address_book->list[i].phone_numbers[0], address_book->list[i].email_addresses[0]);
+	// }
+
+	//fprintf(address_book->fp, NEXT_ENTRY);
 
 	return e_success;
 }
@@ -318,7 +362,7 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 			case 1: //name
 				for (int i = 0; i < address_book->count; i++)
 				{
-					ContactInfo contact = *(address_book->list + i*sizeof(ContactInfo));
+					ContactInfo contact = address_book->list[i];
 
 					for (int j = 0; j < NAME_COUNT; j++)
 					{
@@ -500,7 +544,6 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 			} while (quit != 'q');
 		}
 	
-
 }
 
 Status search_contact(AddressBook *address_book)
