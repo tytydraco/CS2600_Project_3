@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <ctype.h>
 
-#include "address_book_fops.h"
+#include "address_book.h"
 
 Status AddressBookInit(AddressBook *address_book)
 {
@@ -32,8 +32,6 @@ Status load_file(AddressBook *address_book)
 
 		address_book->fp = fopen(DEFAULT_FILE, "a+");
 		AddressBookInit(address_book);
-		
-
 		
 		//************* populating address_book from file.
 		char chr;
@@ -72,9 +70,6 @@ Status load_file(AddressBook *address_book)
 					counter = 0;
 				}
 
-				
-				
-
 				for (int i = 0; i < 5; i++) //get emails
 				{
 					counter = 0;
@@ -106,16 +101,10 @@ Status load_file(AddressBook *address_book)
 		}
 	}
 	else
+	{
+		AddressBookInit(address_book);
 		address_book->fp = fopen(DEFAULT_FILE, "w");
-
-
-	//TESTING
-
-	//ContactInfo test1 = *(address_book->list + 0); 
-	//ContactInfo test2 = *(address_book->list + sizeof(ContactInfo));
-
-
-
+	}
 
 	return e_success;
 }
