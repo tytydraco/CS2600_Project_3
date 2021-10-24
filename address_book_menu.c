@@ -459,9 +459,6 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 					printf(" ");
 			printf(":\n"); //end of first row
 
-
-
-
 			for (int k = 0; k < 4; k++) //printing multiple phones and emails.
 			{
 				printf(":      :                                "); //empty si no and name.
