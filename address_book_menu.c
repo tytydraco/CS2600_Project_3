@@ -69,7 +69,7 @@ Status save_prompt(AddressBook *address_book)
 
 			break;
 		}
-	} while (option != 'N');
+	} while (option != 'N' && option != 'n');
 
 	//free(address_book->list); //why set this free? if the person wants to continue using the address book, this will throw off the program.
 
