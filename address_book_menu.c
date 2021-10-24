@@ -459,9 +459,6 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 					printf(" ");
 			printf(":\n"); //end of first row
 
-
-
-
 			for (int k = 0; k < 4; k++) //printing multiple phones and emails.
 			{
 				printf(":      :                                "); //empty si no and name.
@@ -500,7 +497,7 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 				quit = getchar();
 			} while (quit != 'q');
 		}
-	
+
 }
 
 Status search_contact(AddressBook *address_book)
@@ -509,8 +506,7 @@ Status search_contact(AddressBook *address_book)
 	int option;
 	int flag = 0;
 
-	printf("####### Address Book #######\n");
-	printf("####### Search Contact by:\n");
+	menu_header("Search Contact by:\n");
 	printf("0. Back\n");
 	printf("1. Name\n");
 	printf("2. Phone No\n");
