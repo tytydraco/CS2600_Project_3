@@ -653,6 +653,8 @@ Status edit(AddressBook *address_book, int index)
 {
 	ContactInfo replacement;
 	int option;
+	int phoneCount = 0;
+	int emailCount = 0;
 
 	strncpy(*replacement.name, " ", sizeof(replacement.name));
 	strncpy(*replacement.phone_numbers, " ", sizeof(replacement.phone_numbers));
@@ -662,11 +664,15 @@ Status edit(AddressBook *address_book, int index)
 	{
 		menu_header("Edit Contact:\n");
 		printf("0. Back\n");
-		printf("1. Name\t\t: %s\n", replacement.name);
-		printf("2. Phone No 1\t: %s\n", replacement.phone_numbers);
-		printf("3. Email ID 1\t: %s\n", replacement.email_addresses);
-		printf("\nPlease select an option: ");
+		printf("1. Name\t\t: %s\n", replacement.name[0]);
+		printf("2. Phone No 1\t: %s\n", replacement.phone_numbers[0]);
+		for (int i = 1; i < phoneCount; i++)
+			printf("\t    %d\t: %s\n", i + 1, replacement.phone_numbers[i]);
+		printf("3. Email ID 1\t: %s\n", replacement.email_addresses[0]);
+		for (int i = 1; i < emailCount; i++)
+			printf("\t    %d\t: %s\n", i + 1, replacement.email_addresses[i]);
 
+		printf("\nPlease select an option: ");
 		option = get_option(NUM, "");
 
 		switch (option)
@@ -676,21 +682,23 @@ Status edit(AddressBook *address_book, int index)
 			break;
 		case e_second_opt:
 			printf("Enter the name: ");
-			scanf("%s", replacement.name);
-			fprintf(address_book->fp, *replacement.name);
+			scanf("%s", replacement.name[0]);
+			fprintf(address_book->fp, "%s", replacement.name[0]);
 			fprintf(address_book->fp, FIELD_DELIMITER);
 			break;
 		case e_third_opt:
 			printf("Enter Phone Number: ");
-			scanf("%s", replacement.phone_numbers);
-			fprintf(address_book->fp, *replacement.phone_numbers);
+			scanf("%s", replacement.phone_numbers[0]);
+			fprintf(address_book->fp, "%s", replacement.phone_numbers[0]);
 			fprintf(address_book->fp, FIELD_DELIMITER);
+			phoneCount++;
 			break;
 		case e_fourth_opt:
 			printf("Enter Email: ");
-			scanf("%s", replacement.email_addresses);
-			fprintf(address_book->fp, *replacement.email_addresses);
+			scanf("%s", replacement.email_addresses[0]);
+			fprintf(address_book->fp, "%s", replacement.email_addresses[0]);
 			fprintf(address_book->fp, FIELD_DELIMITER);
+			emailCount++;
 			break;
 		}
 		getchar();
