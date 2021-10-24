@@ -137,11 +137,11 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-#ifndef __linux__
-		system("cls");
-#else
-		system("clear");
-#endif
+// #ifndef __linux__
+// 		system("cls");
+// #else
+// 		system("clear");
+// #endif
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')

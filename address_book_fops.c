@@ -32,72 +32,46 @@ Status load_file(AddressBook *address_book)
 
 		address_book->fp = fopen(DEFAULT_FILE, "a+");
 		AddressBookInit(address_book);
-		
-		//************* populating address_book from file.
-		char chr;
 		int counter = 0;
-		int iterator = 0;
+		char line[1000];
+		char *tok;
 
-
-		chr = getc(address_book->fp);
-
-		while((chr != EOF) )
+		// parses csv file and adds contacts to list if there are any existing contacts
+		while(fgets(line, sizeof(line), address_book->fp) != NULL)
 		{
-			ContactInfo *ptr = (ContactInfo*)calloc(1, sizeof(ContactInfo));
-			
-			while ((chr != '\n') && (chr != EOF))
+			tok = strtok(line, ",");
+			while(tok != NULL)
 			{
+				// adds serial
+				address_book->list[counter].si_no = atoi(tok);
+				printf("%d\n", address_book->list[counter].si_no);
+				tok = strtok(NULL, ",");
+				// adds name
 
-				while (chr != ',') //get name
-				{
-					ptr->name[0][counter] = chr;
-					counter++;				
-					chr = getc(address_book->fp);
-				}
-				
-				
-				counter = 0;
+				strcpy(address_book->list[counter].name[0], tok);
+				printf("%s\n", address_book->list[counter].name[0]);
+				tok = strtok(NULL, ",");
 
-				for (int i = 0; i < 5; i++) //get phones
-				{	
-					chr = getc(address_book->fp); // the previous char was a comma
-					while (chr != ',') //iterating through phones
-					{
-						ptr->phone_numbers[i][counter] = chr;
-						counter++;
-						chr = getc(address_book->fp);
-					}
-					counter = 0;
-				}
+				//adds phone numbers
+				// for (int i = 0; i < PHONE_NUMBER_COUNT; i++)
+				// {
+				// 	strcpy(address_book->list[counter].phone_numbers[i], tok);
+				// 	printf("%s\n", address_book->list[counter].phone_numbers[i]);
+				// 	tok = strtok(NULL, ",");
+				// }
 
-				for (int i = 0; i < 5; i++) //get emails
-				{
-					counter = 0;
-
-					chr = getc(address_book->fp); // the previous char was a comma
-					while (chr != ',') //iterating through emails
-					{
-						ptr->email_addresses[i][counter] = chr;
-						counter++;
-						chr = getc(address_book->fp);
-					}
-				}
-				
-
-				ptr->si_no = iterator + 1; //assigning serial no value
-				chr = getc(address_book->fp); // the previous char was a comma, now it is EOF or \n
-				counter = 0;
-
-				
-				address_book->list[iterator] = *ptr; //writting person into addressbook
-				
-				address_book->count++; 
-				iterator++;
+				// //adds emails
+				// for (int i = 0; i < EMAIL_ID_COUNT; i++)
+				// {
+				// 	printf("TEST2\n");
+				// 	strcpy(address_book->list[counter].email_addresses[i], tok);
+				// 	printf("TEST3\n");
+				// 	printf("%s\n", address_book->list[counter].email_addresses[i]);
+				// 	tok = strtok(NULL, ",");
+				// }
+				counter++;
+				address_book->count++;
 			}
-			
-			chr = getc(address_book->fp); //previous char was \n
-			free(ptr);
-
 		}
 	}
 	else
