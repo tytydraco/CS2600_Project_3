@@ -353,7 +353,7 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 			case 3: //email
 				for (int i = 0; i < address_book->count; i++)
 				{
-					ContactInfo contact = address_book->list[i];
+					ContactInfo contact = *(address_book->list + i*sizeof(ContactInfo));
 
 					for (int j = 0; j < EMAIL_ID_COUNT; j++)
 					{
@@ -370,7 +370,7 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 			case 4: //serial no.
 				for (int i = 0; i < address_book->count; i++)
 				{
-					ContactInfo contact = address_book->list[i];
+					ContactInfo contact = *(address_book->list + i*sizeof(ContactInfo));
 						if (loop_count == contact.si_no)
 						{
 							found = 1;
@@ -493,14 +493,13 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 			printf("===========================================================================================================\n");
 
 			char quit;
-			quit = getchar(); //clearing buffer
-			do
+			while (quit != 'q')
 			{
-				printf("Press: [q] | Cancel: [q]:   ");
+				printf("Press: [q] | Cancel: ");
 				quit = getchar();
-			} while (quit != 'q');
+			} 
 		}
-	
+		return e_success;
 }
 
 Status search_contact(AddressBook *address_book)
@@ -509,8 +508,7 @@ Status search_contact(AddressBook *address_book)
 	int option;
 	int flag = 0;
 
-	printf("####### Address Book #######\n");
-	printf("####### Search Contact by:\n");
+	menu_header("Search Contact by:\n");
 	printf("0. Back\n");
 	printf("1. Name\n");
 	printf("2. Phone No\n");
@@ -548,9 +546,8 @@ Status search_contact(AddressBook *address_book)
 			break;
 		case 4:
 			printf("Enter the serial no.: ");
-			int myInt;
-			scanf("%d", &myInt);
-			search("", address_book, myInt, option, "", e_search);
+			scanf("%s", str);
+			search(str, address_book, 0, option, "", e_search);
 			flag = 1;
 			break;
 		default:
