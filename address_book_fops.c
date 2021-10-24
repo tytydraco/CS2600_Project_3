@@ -33,15 +33,12 @@ Status load_file(AddressBook *address_book)
 		address_book->fp = fopen(DEFAULT_FILE, "a+");
 		AddressBookInit(address_book);
 		
-
-		
 		//************* populating address_book from file.
 		char chr;
 		int counter = 0;
 		int iterator = 0;
 		int tempSiNo = 0;
 
-		
 		fscanf(address_book->fp, "%d", &tempSiNo);
 		chr = getc(address_book->fp);
 		chr = getc(address_book->fp); //previous char was comma
@@ -60,7 +57,6 @@ Status load_file(AddressBook *address_book)
 					chr = getc(address_book->fp);
 				}
 				
-				
 				counter = 0;
 
 				for (int i = 0; i < 5; i++) //get phones
@@ -75,9 +71,6 @@ Status load_file(AddressBook *address_book)
 					counter = 0;
 				}
 
-				
-				
-
 				for (int i = 0; i < 5; i++) //get emails
 				{
 					counter = 0;
@@ -90,19 +83,17 @@ Status load_file(AddressBook *address_book)
 						chr = getc(address_book->fp);
 					}
 				}
-				
 
 				ptr->si_no = tempSiNo; //assigning serial no value
 				chr = getc(address_book->fp); // the previous char was a comma, now it is EOF or \n
 				counter = 0;
 
-				
 				address_book->list[iterator] = *ptr; //writting person into addressbook
 				
 				address_book->count++; 
 				iterator++;
 			}
-			
+
 			fscanf(address_book->fp, "%d", &tempSiNo); //reading next siNo
 			chr = getc(address_book->fp); //previous char was \n, 
 			chr = getc(address_book->fp); //previous char was comma, 
@@ -111,7 +102,10 @@ Status load_file(AddressBook *address_book)
 		}
 	}
 	else
+	{
+		AddressBookInit(address_book);
 		address_book->fp = fopen(DEFAULT_FILE, "w");
+	}
 
 
 	return e_success;
