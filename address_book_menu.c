@@ -759,11 +759,11 @@ Status delete_contact(AddressBook *address_book)
 		printf("Enter the Name: ");
 		scanf("%s", target_name);
 
-		for (int i = 0; i < address_book->count - 1; i++)
+		for (int i = 0; i < address_book->count; i++)
 		{
 			ContactInfo *contact = &address_book->list[i];
 
-			for (int j = 0; j < NAME_COUNT - 1; j++)
+			for (int j = 0; j < NAME_COUNT; j++)
 			{
 				if (strcmp(target_name, contact->name[j]) == 0)
 				{
@@ -779,11 +779,11 @@ Status delete_contact(AddressBook *address_book)
 		printf("Enter Phone Number: ");
 		scanf("%s", target_phone);
 
-		for (int i = 0; i < address_book->count - 1; i++)
+		for (int i = 0; i < address_book->count; i++)
 		{
 			ContactInfo *contact = &address_book->list[i];
 
-			for (int j = 0; j < PHONE_NUMBER_COUNT - 1; j++)
+			for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
 			{
 				if (strcmp(target_phone, contact->phone_numbers[j]) == 0)
 					return delete (address_book, i);
@@ -797,11 +797,11 @@ Status delete_contact(AddressBook *address_book)
 		printf("Enter Email ID: ");
 		scanf("%s", target_email);
 
-		for (int i = 0; i < address_book->count - 1; i++)
+		for (int i = 0; i < address_book->count; i++)
 		{
 			ContactInfo *contact = &address_book->list[i];
 
-			for (int j = 0; j < EMAIL_ID_COUNT - 1; j++)
+			for (int j = 0; j < EMAIL_ID_COUNT; j++)
 			{
 				if (strcmp(target_email, contact->email_addresses[j]) == 0)
 					return delete (address_book, i);
@@ -815,7 +815,7 @@ Status delete_contact(AddressBook *address_book)
 		printf("Enter Serial No: ");
 		scanf("%d", &target_serial);
 
-		for (int i = 0; i < address_book->count - 1; i++)
+		for (int i = 0; i < address_book->count; i++)
 		{
 			ContactInfo *contact = &address_book->list[i];
 
