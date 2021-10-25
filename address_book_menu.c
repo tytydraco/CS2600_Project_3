@@ -714,8 +714,6 @@ Status delete (AddressBook *address_book, int index)
 	ContactInfo contact_to_delete = address_book->list[index];
 	ContactInfo last_contact = address_book->list[last_index];
 
-	printf("SWAPPING %d with %d\n", index, last_index);
-
 	/*
 	 * Swap the last contact with the contact that should be deleted.
 	 * This results in the contact to be deleted being the last contact in the list.
