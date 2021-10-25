@@ -78,51 +78,107 @@ Status save_prompt(AddressBook *address_book)
 
 Status list_contacts(AddressBook *address_book, int index)
 {
-	printf("Index is: %d\n", index);
 	int option;
 
 	menu_header("All Contacts:\n");
-	printf("(Page %d of %d):\n", index, (address_book->count));
-	printf("0. Back\n");
-	printf("1. Next Page\n");
-	printf("2. Last Page\n");
+	printf("(Page %d of %d):\n", (index+1), (address_book->count));
 
-	int startingIndex = WINDOW_SIZE * index;
+		printf("===========================================================================================================\n");
+		printf(":S.No  :Name                            :Phone No                        :Email ID                        :\n");
+		printf("===========================================================================================================\n");
 
-	while ((startingIndex < (address_book->count)) && (startingIndex < (WINDOW_SIZE * (index + 1))))
-	{
-		printf("Loop: %c\n", startingIndex);
-		printf("%p\n", (&address_book->list[startingIndex].name[1][0]));
-		startingIndex++;
-	}
-
-	printf("\nPlease select an option: ");
-	option = get_option(NUM, "");
-	printf("%d\n", option);
-
-	if (option == 0)
-	{
-		printf("Detected 0\n");
-		menu(address_book);
-	}
-	else if (option == 1)
-	{
-		printf("Detected 1\n");
-		if (index < (address_book->count / WINDOW_SIZE))
-		{
-			index++;
-			list_contacts(address_book, index);
+		//Print the first row.
+		printf(":%d", address_book->list[index].si_no);
+		if (address_book->list[index].si_no < 10) {
+			for (int i = 0; i < 5; i++)
+				printf(" ");
+		} else {
+			for (int i = 0; i < 4; i++)
+				printf(" ");
 		}
-	}
-	else if (option == 2)
-	{
-		printf("Detected 2\n");
-		if (index > 0)
-		{
-			index--;
-			list_contacts(address_book, index);
+		printf(":%s", &address_book->list[index].name[0][0]);
+		for (int i = 32 - strlen(&address_book->list[index].name[0][0]); i > 0; i--) {
+			printf(" ");
 		}
-	}
+
+		int NumbOfPhones = sizeof address_book->list[index].phone_numbers / sizeof *address_book->list[index].phone_numbers;
+		int NumbOfEmails = sizeof address_book->list[index].email_addresses / sizeof *address_book->list[index].email_addresses;
+		int phonesPrinted = 0;
+		int emailsPrinted = 0;
+
+		if (NumbOfPhones > 0) {
+			printf(":%s", &address_book->list[index].phone_numbers[0][0]);
+			phonesPrinted++;
+			for (int i = 32 - strlen(&address_book->list[index].phone_numbers[0][0]); i > 0; i--)
+					printf(" ");
+		} else {
+			for (int i = 32 ; i > 0; i--) {
+				printf(" ");
+			}
+		}
+
+		if (NumbOfEmails > 0) {
+			printf(":%s", &address_book->list[index].email_addresses[0][0]);
+			emailsPrinted++;
+			for (int i = 32 - strlen(&address_book->list[index].email_addresses[0][0]); i > 0; i--)
+				printf(" ");
+		} else {
+			for (int i = 32 ; i > 0; i--) {
+				printf(" ");
+			}
+		}
+		printf(":\n");
+
+		for (int k = 0; k < 4; k++) //Print multiple of sama info types.
+		{
+			printf(":      :                                "); //Fill whitespace.
+
+			if (phonesPrinted < NumbOfPhones) {
+				printf(":%s", &address_book->list[index].phone_numbers[phonesPrinted][0]);
+				for (int m = 32 - strlen(&address_book->list[index].phone_numbers[phonesPrinted][0]); m > 0; m--)
+					printf(" ");
+				phonesPrinted++;
+			} else
+				for (int n = 32 ; n > 0; n--)
+					printf(" ");
+
+			if (emailsPrinted < NumbOfEmails) {
+				printf(":%s", &address_book->list[index].email_addresses[emailsPrinted][0]);
+				for (int l = 32 - strlen(&address_book->list[index].email_addresses[emailsPrinted][0]); l > 0; l--)
+					printf(" ");
+				emailsPrinted++;
+			} else
+				for (int p = 32 ; p > 0; p--)
+					printf(" ");
+			printf(":\n"); //end of row
+		}
+
+		printf("===========================================================================================================\n");
+
+	int canMove = 0;
+	do {
+		printf("Exit: [0] | Next Page: [2] | Previous Page: [1]:   ");
+		option = get_option(NUM, "");
+		printf("%d\n", option);
+
+		if (option == 0) {
+			menu(address_book);
+		} else if (option == 2) {
+			if (index < (address_book->count-1)) {
+				index++;
+				list_contacts(address_book, index);
+			} else {
+				printf("Sorry, Youre on the last page.\n");
+			}
+		} else if (option == 1) {
+			if (index > 0) {
+				index--;
+				list_contacts(address_book, index);
+			} else {
+				printf("Sorry, Youre on the first page.\n");
+			}
+		}
+	} while (canMove == 0);
 
 	/* 
 	 * Add code to list all the contacts availabe in address_book.csv file
